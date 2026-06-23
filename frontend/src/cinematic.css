@@ -1,0 +1,223 @@
+/* ── Reset & root ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.cinematic-root {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Georgia', serif;
+}
+
+/* ── Eye opening ── */
+.eye-container {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.eyelid {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: #0a0a0a;
+  transition: transform 1.4s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.eyelid-top { top: 0; transform: translateY(0); }
+.eyelid-bottom { bottom: 0; transform: translateY(0); }
+
+.eye-container.opening .eyelid-top { transform: translateY(-100%); }
+.eye-container.opening .eyelid-bottom { transform: translateY(100%); }
+.eye-container.open .eyelid-top { transform: translateY(-100%); }
+.eye-container.open .eyelid-bottom { transform: translateY(100%); }
+
+/* ── Scene background ── */
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.scene-visible { opacity: 1; }
+
+.scene-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.scene-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+}
+
+/* ── Lady character ── */
+.lady-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  opacity: 0;
+  transition: opacity 1s ease 0.2s, transform 1s ease 0.2s;
+  width: clamp(280px, 45vw, 580px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.lady-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.lady-glow {
+  position: absolute;
+  bottom: 0;
+  width: 80%;
+  height: 60%;
+  background: radial-gradient(ellipse at bottom, rgba(255, 220, 160, 0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.lady-img {
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 8px 32px rgba(0,0,0,0.5));
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lady-img { animation: none; }
+}
+
+/* ── Dialogue box ── */
+.dialogue-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 40px 36px;
+  background: rgba(10, 8, 6, 0.62);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s;
+}
+
+.dialogue-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dialogue-eyebrow {
+  font-family: 'Arial', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.45);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.dialogue-question {
+  font-size: clamp(18px, 2.4vw, 26px);
+  font-weight: 400;
+  color: #fff;
+  margin-bottom: 22px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.dialogue-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dialogue-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  font-size: 15px;
+  font-family: 'Arial', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  letter-spacing: 0.01em;
+}
+
+.dialogue-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+.dialogue-btn:active { transform: translateY(0); }
+
+.dialogue-btn-icon { font-size: 16px; }
+
+.dialogue-loading,
+.dialogue-error {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .dialogue-box { padding: 20px 20px 28px; }
+  .lady-wrapper { width: 85vw; }
+}
+
+/* .lady-img {
+    position: absolute;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    /* Keep existing width/height */
+/*}/*
+/* Force center everything */
+.lady-img,
+[class*="lady"],
+[class*="Lady"] {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
+    bottom: auto !important;
+}
+
+/* Center the background */
+.scene-bg,
+[class*="scene"],
+[class*="background"] {
+    width: 100vw !important;
+    height: 100vh !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+}
