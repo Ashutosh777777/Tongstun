@@ -1,6 +1,14 @@
 /* ── Reset & root ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .cinematic-root {
   position: relative;
   width: 100vw;
@@ -61,7 +69,7 @@
 /* ── Lady character ── */
 .lady-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: -290px;
   left: 50%;
   transform: translateX(-50%) translateY(30px);
   opacity: 0;
@@ -71,6 +79,7 @@
   flex-direction: column;
   align-items: center;
   pointer-events: none;
+  z-index: 10;
 }
 
 .lady-visible {
@@ -88,7 +97,6 @@
 }
 
 .lady-img {
-  position: relative;
   width: 100%;
   height: auto;
   display: block;
@@ -119,6 +127,7 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease 0.6s, transform 0.8s ease 0.6s;
+  z-index: 20;
 }
 
 .dialogue-visible {
@@ -188,36 +197,4 @@
 @media (max-width: 600px) {
   .dialogue-box { padding: 20px 20px 28px; }
   .lady-wrapper { width: 85vw; }
-}
-
-/* .lady-img {
-    position: absolute;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    /* Keep existing width/height */
-/*}/*
-/* Force center everything */
-.lady-img,
-[class*="lady"],
-[class*="Lady"] {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    right: auto !important;
-    bottom: auto !important;
-}
-
-/* Center the background */
-.scene-bg,
-[class*="scene"],
-[class*="background"] {
-    width: 100vw !important;
-    height: 100vh !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
 }

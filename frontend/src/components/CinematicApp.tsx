@@ -8,38 +8,29 @@ type Stage = 'eye-opening' | 'scene' | 'ready'
 
 export default function CinematicApp() {
   const [stage, setStage] = useState<Stage>('eye-opening')
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
-  const handleEyeComplete = () => setStage('scene')
+  // Scene starts visible immediately — it's hidden behind the eyelids anyway
+  const sceneVisible = true
 
-  // Small delay after scene fades in before showing character + dialogue
-  const sceneVisible = stage === 'scene' || stage === 'ready'
-  const contentVisible = stage === 'ready'
+  // Lady and dialogue appear after eyes finish opening
+  const contentVisible = stage === 'scene' || stage === 'ready'
 
-  // Trigger content after scene is visible
-  const handleSceneReady = () => {
+  const handleEyeComplete = () => {
+    setStage('scene')
     setTimeout(() => setStage('ready'), 800)
   }
 
   const handleSelectCategory = (slug: string) => {
-    setSelectedCategory(slug)
-    // TODO: navigate to scenario selection for this category
     console.log('Selected category:', slug)
+    // TODO: navigate to scenario selection
   }
 
   return (
     <div className="cinematic-root">
-      {stage === 'eye-opening' && (
-        <EyeOpening onComplete={handleEyeComplete} />
-      )}
-
       <Scene visible={sceneVisible} />
 
-      {/* Trigger content reveal once scene is shown */}
-      {sceneVisible && !contentVisible && (
-        <div style={{ display: 'none' }}>
-          {setTimeout(handleSceneReady, 0) as unknown as null}
-        </div>
+      {stage === 'eye-opening' && (
+        <EyeOpening onComplete={handleEyeComplete} />
       )}
 
       <LadyCharacter visible={contentVisible} />
