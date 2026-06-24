@@ -3,40 +3,55 @@ import EyeOpening from './EyeOpening'
 import Scene from './Scene'
 import LadyCharacter from './LadyCharacter'
 import DialogueBox from './DialogueBox'
+import MapView from '../pages/MapView'
 
-type Stage = 'eye-opening' | 'scene' | 'ready'
+type Stage = 'eye-opening' | 'landing' | 'zoom-out' | 'map'
 
 export default function CinematicApp() {
   const [stage, setStage] = useState<Stage>('eye-opening')
 
-  // Scene starts visible immediately — it's hidden behind the eyelids anyway
-  const sceneVisible = true
-
-  // Lady and dialogue appear after eyes finish opening
-  const contentVisible = stage === 'scene' || stage === 'ready'
-
   const handleEyeComplete = () => {
-    setStage('scene')
-    setTimeout(() => setStage('ready'), 800)
+    setStage('landing')
   }
 
-  const handleSelectCategory = (slug: string) => {
-    console.log('Selected category:', slug)
-    // TODO: navigate to scenario selection
+  const handleStart = () => {
+    // Trigger zoom transition then show map
+    setStage('zoom-out')
+    setTimeout(() => setStage('map'), 700)
+  }
+
+  const handleBack = () => {
+    setStage('zoom-out')
+    setTimeout(() => setStage('landing'), 50)
+    // re-enter from map side
+    setTimeout(() => setStage('landing'), 700)
+  }
+
+  const handleSelectScenario = (slug: string) => {
+    console.log('Selected scenario:', slug)
+    // TODO: navigate to voice conversation screen
+  }
+
+  if (stage === 'map') {
+    return (
+      <div className="cinematic-root map-enter">
+        <MapView onSelectScenario={handleSelectScenario} onBack={handleBack} />
+      </div>
+    )
   }
 
   return (
-    <div className="cinematic-root">
-      <Scene visible={sceneVisible} />
+    <div className={`cinematic-root ${stage === 'zoom-out' ? 'cinematic-zoom-out' : ''}`}>
+      <Scene visible={true} />
 
       {stage === 'eye-opening' && (
         <EyeOpening onComplete={handleEyeComplete} />
       )}
 
-      <LadyCharacter visible={contentVisible} />
+      <LadyCharacter visible={stage === 'landing'} />
       <DialogueBox
-        visible={contentVisible}
-        onSelectCategory={handleSelectCategory}
+        visible={stage === 'landing'}
+        onStart={handleStart}
       />
     </div>
   )

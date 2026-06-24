@@ -1,33 +1,19 @@
-import { useCategories } from '../hooks/useCategories'
-
 interface DialogueBoxProps {
   visible: boolean
-  onSelectCategory: (slug: string) => void
+  onStart: () => void
 }
 
-export default function DialogueBox({ visible, onSelectCategory }: DialogueBoxProps) {
-  const { categories, loading, error } = useCategories()
-
+export default function DialogueBox({ visible, onStart }: DialogueBoxProps) {
   return (
     <div className={`dialogue-box ${visible ? 'dialogue-visible' : ''}`}>
       <p className="dialogue-eyebrow">GUIDE</p>
       <p className="dialogue-question">
-        Welcome. Which scenario would you like to practice?
+        Ready to level up your conversations?
       </p>
-
       <div className="dialogue-choices">
-        {loading && <span className="dialogue-loading">Loading...</span>}
-        {error && <span className="dialogue-error">Couldn't load scenarios</span>}
-        {!loading && !error && categories.map(cat => (
-          <button
-            key={cat.id}
-            className="dialogue-btn"
-            onClick={() => onSelectCategory(cat.slug)}
-          >
-            {cat.icon && <span className="dialogue-btn-icon">{cat.icon}</span>}
-            {cat.name}
-          </button>
-        ))}
+        <button className="dialogue-btn dialogue-btn-primary" onClick={onStart}>
+          Start Yapping ✦
+        </button>
       </div>
     </div>
   )
