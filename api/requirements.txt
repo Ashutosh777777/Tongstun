@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+faster-whisper
+ollama
+kokoro-onnx
+numpy
+soundfile
+python-dotenv
+websockets
